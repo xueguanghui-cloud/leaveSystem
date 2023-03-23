@@ -6,8 +6,6 @@ import headerNav from '@/compontent/headerNav/headerNav.vue'
 
 const collapsed = ref(false)
 const setCollapsedProp = (value: boolean) => {
-  console.log(value)
-
   collapsed.value = value
 }
 </script>

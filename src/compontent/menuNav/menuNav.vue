@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import router from '@/router'
 import { constuserMenuList } from './config/index'
+import type { UserMenu } from './config/index'
+
 import { userStore } from '@/stores/user'
 
 import { ref } from 'vue'
@@ -15,6 +18,13 @@ withDefaults(
 const storeUser = userStore()
 
 const selectedKeys = ref<string[]>(['1'])
+
+// 事件处理
+const handleMenuItemClick = (item: UserMenu) => {
+  router.push({
+    path: item.path ?? '/not-found'
+  })
+}
 </script>
 
 <template>
@@ -23,7 +33,7 @@ const selectedKeys = ref<string[]>(['1'])
       <RouterLink to="/">
         <div>
           <img src="@/assets/logo.svg" alt="" />
-          <h1 v-show="!collapsed">Ant Design Pro</h1>
+          <h1 v-show="!collapsed">学生管理系统</h1>
         </div>
       </RouterLink>
     </div>
@@ -32,14 +42,31 @@ const selectedKeys = ref<string[]>(['1'])
         v-for="userMenu in constuserMenuList[storeUser.userInfo.userRole]"
         :key="userMenu.id"
       >
-        <a-sub-menu v-if="userMenu.type === 1" :title="userMenu.menuName">
-          <a-menu-item v-for="item in userMenu.children" :key="item.id">
-            {{ item.menuName }}
+        <template v-if="userMenu.type === 1">
+          <a-sub-menu :title="userMenu.menuName" :key="userMenu.id">
+            <template #icon>
+              <icon-font class="iconfont" :type="userMenu.icon" />
+            </template>
+            <a-menu-item
+              v-for="item in userMenu.children"
+              :key="item.id"
+              @click="handleMenuItemClick(item)"
+            >
+              <template #icon>
+                <icon-font class="iconfont" :type="item.icon" />
+              </template>
+              {{ item.menuName }}
+            </a-menu-item>
+          </a-sub-menu>
+        </template>
+        <template v-else-if="userMenu.type === 2">
+          <a-menu-item :key="userMenu.id" @click="handleMenuItemClick(userMenu)">
+            <template #icon>
+              <icon-font class="iconfont" :type="userMenu.icon" />
+            </template>
+            {{ userMenu.menuName }}
           </a-menu-item>
-        </a-sub-menu>
-        <a-menu-item v-else-if="userMenu.type === 2" :key="userMenu.id">{{
-          userMenu.menuName
-        }}</a-menu-item>
+        </template>
       </template>
     </a-menu>
   </a-layout-sider>

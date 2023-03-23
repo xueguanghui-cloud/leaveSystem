@@ -35,7 +35,7 @@ const onFinish = (values: FormState) => {
         <div class="header">
           <a href="/">
             <img src="@/assets/logo.svg" alt="logo" class="logo" />
-            <span class="title"> Ant Design</span>
+            <span class="title"> 学生管理系统 </span>
           </a>
         </div>
       </a-layout-header>
