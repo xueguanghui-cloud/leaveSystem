@@ -21,13 +21,11 @@ const selectedKeys = ref<string[]>(['1_1'])
 const openKeys = ref<string[]>(['1'])
 
 if (router.currentRoute.value.path !== '/main' && router.currentRoute.value.path !== '/login') {
-  let curMenu: UserMenu
   constuserMenuList[storeUser.userInfo.userRole].forEach((item) => {
     item.children?.forEach((menu) => {
       if (menu.path === router.currentRoute.value.path) {
-        curMenu = menu
         openKeys.value = [item.id]
-        selectedKeys.value = [curMenu.id]
+        selectedKeys.value = [menu.id]
       }
     })
   })
@@ -44,12 +42,10 @@ const handleMenuItemClick = (item: UserMenu) => {
 <template>
   <a-layout-sider :collapsed="collapsed" :trigger="null" collapsible>
     <div class="logo" :width="collapsed ? '60px' : '210px'">
-      <RouterLink to="/">
-        <div>
-          <img src="@/assets/logo.svg" alt="" />
-          <h1 v-show="!collapsed">学生管理系统</h1>
-        </div>
-      </RouterLink>
+      <div>
+        <img src="@/assets/logo.svg" alt="" />
+        <h1 v-show="!collapsed">学生管理系统</h1>
+      </div>
     </div>
     <a-menu
       theme="dark"
@@ -99,13 +95,14 @@ const handleMenuItemClick = (item: UserMenu) => {
     overflow: hidden;
     background: #001529;
     transition: all 0.3s;
-    a div {
+    div {
       width: 100%;
       height: 100%;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: default;
       img {
         width: 32px;
         height: 32px;

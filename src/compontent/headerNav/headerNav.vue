@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -6,7 +7,10 @@ import {
   LoginOutlined
 } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
-import router from '@/router'
+import breadcrumb from '@/compontent/breadcrumb/breadcrumb.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { pathMaptoBreadcrumbs } from '@/utils/mapMenus'
 const storeUser = userStore()
 const emit = defineEmits(['setCollapsed'])
 const props = withDefaults(
@@ -21,6 +25,13 @@ const props = withDefaults(
 const setCollapsed = () => {
   emit('setCollapsed', !props.collapsed)
 }
+
+const breadcrumbs = computed(() => {
+  const userMenus = storeUser.userMenus
+  const route = useRoute()
+  const currentPath = route.path
+  return pathMaptoBreadcrumbs(userMenus, currentPath)
+})
 
 const logout = () => {
   // 清空用户信息
@@ -58,6 +69,10 @@ const logout = () => {
         class="trigger"
         @click="setCollapsed"
       />
+
+      <div class="content">
+        <breadcrumb :breadcrumbs="breadcrumbs"></breadcrumb>
+      </div>
     </div>
     <a-dropdown>
       <div class="info">
@@ -68,7 +83,7 @@ const logout = () => {
         <a-menu>
           <a-menu-item key="0">
             <user-outlined />
-            <RouterLink to="/user/info"> 个人信息 </RouterLink>
+            <RouterLink to="/main/user/userCenter"> 个人信息 </RouterLink>
           </a-menu-item>
           <a-menu-item key="1" @click="logout">
             <login-outlined />
@@ -87,7 +102,9 @@ const logout = () => {
   align-items: center;
   padding: 0 20px !important;
   .collapsedIcon {
-    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .info {
     img {

@@ -124,7 +124,7 @@ export const constuserMenuList: {
           type: 2,
           icon: 'icon-icon_jiaozhigongguanli',
           path: '/main/userlist/teacher',
-          menuName: '教职工列表'
+          menuName: '职工列表'
         }
       ]
     },
