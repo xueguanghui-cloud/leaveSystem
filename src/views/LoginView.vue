@@ -18,8 +18,9 @@ const formState = reactive<FormState>({
 
 const onFinish = (values: FormState) => {
   userLogin(values)
-    .then((res) => {
+    .then(async (res) => {
       storeUser.setUser(res.data)
+
       router.push('/')
     })
     .catch((err) => {

@@ -17,7 +17,21 @@ withDefaults(
 )
 const storeUser = userStore()
 
-const selectedKeys = ref<string[]>(['1'])
+const selectedKeys = ref<string[]>(['1_1'])
+const openKeys = ref<string[]>(['1'])
+
+if (router.currentRoute.value.path !== '/main' && router.currentRoute.value.path !== '/login') {
+  let curMenu: UserMenu
+  constuserMenuList[storeUser.userInfo.userRole].forEach((item) => {
+    item.children?.forEach((menu) => {
+      if (menu.path === router.currentRoute.value.path) {
+        curMenu = menu
+        openKeys.value = [item.id]
+        selectedKeys.value = [curMenu.id]
+      }
+    })
+  })
+}
 
 // 事件处理
 const handleMenuItemClick = (item: UserMenu) => {
@@ -29,7 +43,7 @@ const handleMenuItemClick = (item: UserMenu) => {
 
 <template>
   <a-layout-sider :collapsed="collapsed" :trigger="null" collapsible>
-    <div class="logo">
+    <div class="logo" :width="collapsed ? '60px' : '210px'">
       <RouterLink to="/">
         <div>
           <img src="@/assets/logo.svg" alt="" />
@@ -37,7 +51,12 @@ const handleMenuItemClick = (item: UserMenu) => {
         </div>
       </RouterLink>
     </div>
-    <a-menu theme="dark" mode="inline">
+    <a-menu
+      theme="dark"
+      mode="inline"
+      v-model:selectedKeys="selectedKeys"
+      v-model:openKeys="openKeys"
+    >
       <template
         v-for="userMenu in constuserMenuList[storeUser.userInfo.userRole]"
         :key="userMenu.id"

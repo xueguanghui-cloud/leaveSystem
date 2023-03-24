@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/types/user'
 import type { UserStore } from './type'
+import type { UserMenu } from '@/compontent/menuNav/config/index'
 import { mapMenusToRoutes } from '@/utils/mapMenus'
-import { constuserMenuList } from '@/compontent/menuNav/config/index'
 import router from '@/router'
 
 export const userStore = defineStore('user', {
@@ -22,22 +22,28 @@ export const userStore = defineStore('user', {
         userRole: 'student',
         updateTime: '',
         createTime: ''
-      }
+      },
+      userMenus: []
     }
   },
   getters: {},
   actions: {
     setUser(userInfo: User) {
       this.userInfo = userInfo
-      const routes = mapMenusToRoutes(constuserMenuList[this.userInfo.userRole])
-      // 将routes => router.main.children
+    },
+    async setUserMenus(userMenus: UserMenu[]) {
+      this.userMenus = userMenus
 
-      routes.forEach((route) => {
-        router.addRoute('home', route)
+      const routesChildren = await mapMenusToRoutes(this.userMenus)
+
+      // 将routes => router.main.children
+      routesChildren.forEach((route) => {
+        if (router.hasRoute(route.name!)) return
+        router.addRoute('main', route)
       })
     }
   },
   persist: {
-    paths: ['userInfo']
+    paths: ['userInfo', 'userMenus']
   }
 })
