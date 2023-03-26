@@ -8,3 +8,12 @@ import { get, post } from '@/service'
 export const userLogin = (user: { userAccount: string; userPassword: string }) => {
   return post('/user/login', user)
 }
+
+/**
+ * 上传图片
+ * @param file
+ * @returns Promise
+ */
+export const getUserList = (file: File) => {
+  return post('/user/list/page', file)
+}

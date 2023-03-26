@@ -32,6 +32,9 @@ const setCollapsedProp = (value: boolean) => {
   .ant-layout {
     width: 100%;
     height: 100%;
+    .ant-layout-content {
+      overflow-y: scroll;
+    }
   }
 }
 </style>

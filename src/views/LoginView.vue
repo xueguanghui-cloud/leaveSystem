@@ -66,7 +66,7 @@ const onFinish = (values: FormState) => {
           </a-form-item>
 
           <a-form-item :wrapper-col="{ span: 12 }">
-            <a-button type="primary" html-type="submit">登陆</a-button>
+            <a-button type="primary" html-type="submit">登录</a-button>
           </a-form-item>
         </a-form>
       </a-layout-content>
